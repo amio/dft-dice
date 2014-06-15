@@ -14,7 +14,7 @@ function FizzyText(wrapper, message) {
   // Otherwise, gui-dat can't see them.
 
   this.growthSpeed = 0.2;       // how fast do particles change size?
-  this.maxSize = 7;          // how big can they get?
+  this.maxSize = 3;             // how big can they get?
   this.noiseStrength = 10;      // how turbulent is the flow?
   this.speed = 0.4;             // how fast do particles move?
   this.displayOutline = false;  // should we draw the message as a stroke?
@@ -23,11 +23,13 @@ function FizzyText(wrapper, message) {
   var wrapperRect = wrapper.getBoundingClientRect();
   var width = wrapperRect.width;
   var height = wrapperRect.height;
-  var textAscent = height/2;
-  var textOffsetLeft = width/2;
+  var textX = parseInt(width/2);
+  var textY = parseInt(height/2);
   var noiseScale = 300;
+  
+  var praticlesNum = 2000;
 
-  var colors = ["#00aeff", "#0fa954", "#54396e", "#e61d5f"];
+  var colors = ["#9ED841", "#E057EF", "#2A99DD", "#F4A432"];
 
   // This is the context we use to get a bitmap of text using
   // the getImageData function.
@@ -54,10 +56,10 @@ function FizzyText(wrapper, message) {
 
   // Set g.font to the same font as the bitmap canvas, incase we
   // want to draw some outlines.
-  s.font = g.font = "800 130px 'Open Sans', arial, sans-serif";
+  s.font = g.font = "800 120px 'Helvetica', arial, sans-serif";
 
   // Instantiate some particles
-  for (var i = 0; i < 600; i++) {
+  for (var i = 0; i < praticlesNum; i++) {
     particles.push(new Particle(Math.random() * width, Math.random() * height));
   }
 
@@ -92,7 +94,7 @@ function FizzyText(wrapper, message) {
 
     s.fillStyle = "#222";
     s.textAlign = 'center';
-    s.fillText(msg, textOffsetLeft, textAscent);
+    s.fillText(msg, textX, textY);
 
     // Pull reference
     var imageData = s.getImageData(0, 0, width, height);
