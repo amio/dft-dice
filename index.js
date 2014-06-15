@@ -1,6 +1,6 @@
 window.onload = function () {
 
-  new FizzyText(document.getElementById('namesCanvas'), 'Design For Touch');
+  window.text = new FizzyText(document.getElementById('namesCanvas'), 'DESIGN FOR TOUCH');
 
 };
 
@@ -9,11 +9,22 @@ function FizzyText(wrapper, message) {
   var that = this;
   var _this = this;
 
+  // These are the variables that we manipulate with gui-dat.
+  // Notice they're all defined with "this". That makes them public.
+  // Otherwise, gui-dat can't see them.
+
+  this.growthSpeed = 0.2;       // how fast do particles change size?
+  this.maxSize = 7;          // how big can they get?
+  this.noiseStrength = 10;      // how turbulent is the flow?
+  this.speed = 0.4;             // how fast do particles move?
+  this.displayOutline = false;  // should we draw the message as a stroke?
+  this.framesRendered = 0;
+
   var wrapperRect = wrapper.getBoundingClientRect();
   var width = wrapperRect.width;
   var height = wrapperRect.height;
-  var textAscent = 101;
-  var textOffsetLeft = 80;
+  var textAscent = height/2;
+  var textOffsetLeft = width/2;
   var noiseScale = 300;
 
   var colors = ["#00aeff", "#0fa954", "#54396e", "#e61d5f"];
@@ -43,10 +54,10 @@ function FizzyText(wrapper, message) {
 
   // Set g.font to the same font as the bitmap canvas, incase we
   // want to draw some outlines.
-  s.font = g.font = "800 182px 'Open Sans', arial, sans-serif";
+  s.font = g.font = "800 130px 'Open Sans', arial, sans-serif";
 
   // Instantiate some particles
-  for (var i = 0; i < 1000; i++) {
+  for (var i = 0; i < 600; i++) {
     particles.push(new Particle(Math.random() * width, Math.random() * height));
   }
 
@@ -80,6 +91,7 @@ function FizzyText(wrapper, message) {
     s.fillRect(0, 0, width, height);
 
     s.fillStyle = "#222";
+    s.textAlign = 'center';
     s.fillText(msg, textOffsetLeft, textAscent);
 
     // Pull reference
@@ -102,7 +114,7 @@ function FizzyText(wrapper, message) {
       g.strokeText(message, textOffsetLeft, textAscent);
     }
 
-    g.globalCompositeOperation = "darker";
+    g.globalCompositeOperation = "lighter";
 
     for (var i = particles.length; i--; ) {
       g.fillStyle = colors[i % colors.length];
@@ -160,8 +172,8 @@ function FizzyText(wrapper, message) {
       }
 
       // This velocity is used by the explode function.
-      this.vx *= 0.5;
-      this.vy *= 0.5;
+      this.vx *= 0.01;
+      this.vy *= 0.01;
 
       // Change our position based on the flow field and our
       // explode velocity.
