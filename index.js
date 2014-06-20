@@ -14,20 +14,20 @@ function FizzyText(wrapper, message) {
   // Otherwise, gui-dat can't see them.
 
   this.growthSpeed = 0.2;       // how fast do particles change size?
-  this.maxSize = 3;             // how big can they get?
+  this.maxSize = 5;             // how big can they get?
   this.noiseStrength = 10;      // how turbulent is the flow?
-  this.speed = 0.4;             // how fast do particles move?
+  this.speed = 0.2;             // how fast do particles move?
   this.displayOutline = false;  // should we draw the message as a stroke?
   this.framesRendered = 0;
 
   var wrapperRect = wrapper.getBoundingClientRect();
   var width = wrapperRect.width;
   var height = wrapperRect.height;
-  var textX = parseInt(width/2);
-  var textY = parseInt(height/2);
-  var noiseScale = 300;
-  
-  var praticlesNum = 2000;
+  var textX = parseInt(width / 2);
+  var textY = parseInt(height / 2);
+  var noiseScale = 800;
+
+  var praticlesNum = 800;
 
   var colors = ["#9ED841", "#E057EF", "#2A99DD", "#F4A432"];
 
@@ -56,7 +56,7 @@ function FizzyText(wrapper, message) {
 
   // Set g.font to the same font as the bitmap canvas, incase we
   // want to draw some outlines.
-  s.font = g.font = "800 120px 'Helvetica', arial, sans-serif";
+  s.font = g.font = "800 100px 'Helvetica', arial, sans-serif";
 
   // Instantiate some particles
   for (var i = 0; i < praticlesNum; i++) {
@@ -76,7 +76,7 @@ function FizzyText(wrapper, message) {
     createBitmap(message);
   });
 
-  this.explode = function() {
+  this.explode = function () {
     var mag = Math.random() * 30 + 30;
     for (var i = particles.length; i--;) {
       var angle = Math.random() * Math.PI * 2;
@@ -113,12 +113,12 @@ function FizzyText(wrapper, message) {
       g.globalCompositeOperation = "source-over";
       g.strokeStyle = "#000";
       g.lineWidth = .5;
-      g.strokeText(message, textOffsetLeft, textAscent);
+      g.strokeText(message, textX, textY);
     }
 
     g.globalCompositeOperation = "lighter";
 
-    for (var i = particles.length; i--; ) {
+    for (var i = particles.length; i--;) {
       g.fillStyle = colors[i % colors.length];
       particles[i].render();
     }

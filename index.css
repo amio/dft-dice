@@ -3,4 +3,4 @@ html, body { margin: 0; padding: 0; overflow: hidden; height: 100%; background-c
 
 #prize { text-align: center }
 
-#namesCanvas { height: 100%; position: absolute; top: 0; width: 100%; z-index: 999 }
+#namesCanvas { height: 100%; position: absolute; top: 0; width: 100%; z-index: 9 }
