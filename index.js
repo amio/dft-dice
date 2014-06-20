@@ -1,8 +1,76 @@
 window.onload = function () {
 
-  window.text = new FizzyText(document.getElementById('namesCanvas'), 'DESIGN FOR TOUCH');
+  window.text = new FizzyText(document.getElementById('titleCanvas'), 'DESIGN FOR TOUCH');
+
+  var names = ['Alex', 'Black', 'Camy', 'Daisy', 'Emma', 'Frank', 'Gary', 'Hubert', 'Ivy', 'Jony', 'Kevin',
+    'Lemon', 'Mary', 'Nick', 'Owen', 'Prince', 'Quency', 'Ray', 'Sunny', 'Tony', 'Uni', 'Viken', 'William'];
+
+  window.dice = new NameRoller(document.getElementById('roller'), names);
 
 };
+
+/**
+ * The Dice
+ */
+
+function NameRoller(wrapper, names) {
+
+  this.names = names;
+  var nameIndex = 0;
+
+  var that = this;
+  var htmlWrapper = document.createElement('div');
+
+  this.addName = function (name) {
+    htmlWrapper.innerHTML = '<li class="name prev">N</li>'.replace('N', name);
+    var nameEl = htmlWrapper.firstChild;
+    wrapper.appendChild(nameEl);
+    
+    nameEl.getBoundingClientRect();
+    nameEl.classList.remove('prev');
+    nameEl.classList.add('pres');
+    
+    nameEl.addEventListener('transitionend', function(e){
+      e.target.classList.remove('pres');
+      e.target.classList.add('past');
+    });
+  };
+
+  this.roll = function () {
+    this.addName(this.names[nameIndex]);
+
+    if(wrapper.children.length > 3){
+      wrapper.firstChild.classList.remove('pres');
+      wrapper.firstChild.classList.add('past');
+      wrapper.firstChild.addEventListener('transitionend',function(e){
+        try{
+          wrapper.removeChild(e.target);
+        }catch(e){}
+      });
+    }
+
+    // Loop
+    nameIndex += 1;
+    if (nameIndex == this.names.length) {
+      nameIndex = 0;
+    }
+  };
+
+  window.addEventListener('keypress', function (e) {
+
+    switch (e.keyCode) {
+    case 32:
+      // Space
+      that.roll();
+    }
+
+  });
+
+}
+
+/**
+ * Fizzy DFT
+ */
 
 function FizzyText(wrapper, message) {
 
@@ -21,13 +89,13 @@ function FizzyText(wrapper, message) {
   this.framesRendered = 0;
 
   var wrapperRect = wrapper.getBoundingClientRect();
-  var width = wrapperRect.width;
-  var height = wrapperRect.height;
+  var width = parseInt(wrapperRect.width);
+  var height = parseInt(wrapperRect.height);
   var textX = parseInt(width / 2);
   var textY = parseInt(height / 2);
   var noiseScale = 800;
 
-  var praticlesNum = 800;
+  var praticlesNum = 600;
 
   var colors = ["#9ED841", "#E057EF", "#2A99DD", "#F4A432"];
 
