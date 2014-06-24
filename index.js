@@ -22,6 +22,13 @@ function NameRoller(wrapper, names) {
   var htmlWrapper = document.createElement('div');
 
   this.addName = function (name) {
+
+    if(wrapper.children.length){
+      for(var i = wrapper.children.length; i--;){
+        this.removeName(wrapper.children[i]);
+      }
+    }
+    
     htmlWrapper.innerHTML = '<li class="name prev">N</li>'.replace('N', name);
     var nameEl = htmlWrapper.firstChild;
     wrapper.appendChild(nameEl);
@@ -29,31 +36,25 @@ function NameRoller(wrapper, names) {
     nameEl.getBoundingClientRect();
     nameEl.classList.remove('prev');
     nameEl.classList.add('pres');
-    
-    nameEl.addEventListener('transitionend', function(e){
-      e.target.classList.remove('pres');
-      e.target.classList.add('past');
+
+    if(wrapper.children.length > 1){
+      this.removeName(wrapper.children[0]);
+    }
+  };
+  
+  this.removeName = function(el){
+    el.classList.remove('pres');
+    el.classList.add('past');
+    el.addEventListener('transitionend',function(e){
+      try{
+        wrapper.removeChild(e.target);
+      }catch(e){}
     });
   };
 
   this.roll = function () {
-    this.addName(this.names[nameIndex]);
-
-    if(wrapper.children.length > 3){
-      wrapper.firstChild.classList.remove('pres');
-      wrapper.firstChild.classList.add('past');
-      wrapper.firstChild.addEventListener('transitionend',function(e){
-        try{
-          wrapper.removeChild(e.target);
-        }catch(e){}
-      });
-    }
-
-    // Loop
-    nameIndex += 1;
-    if (nameIndex == this.names.length) {
-      nameIndex = 0;
-    }
+    var idx = Math.floor(this.names.length * Math.random());
+    this.addName(this.names[idx]);
   };
 
   window.addEventListener('keypress', function (e) {
