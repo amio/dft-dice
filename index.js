@@ -7,7 +7,32 @@ window.onload = function () {
 
   window.dice = new NameRoller(document.getElementById('roller'), names);
 
+  var prizes = {
+    '1': [
+      {
+        cls: 'ctrip',
+        title: '携程奖品'
+      },
+      {
+        cls: 'sony',
+        title: '索尼播放器'
+      }
+    ]
+  };
+
+  window.prizeShow = new Prizes(prizes);
+
 };
+
+/**
+ * The Prizes
+ */
+
+function Prizes(prizes) {
+
+  this.setPrize = function () {}
+
+}
 
 /**
  * The Dice
@@ -16,39 +41,38 @@ window.onload = function () {
 function NameRoller(wrapper, names) {
 
   this.names = names;
-  var nameIndex = 0;
 
   var that = this;
   var htmlWrapper = document.createElement('div');
 
   this.addName = function (name) {
 
-    if(wrapper.children.length){
-      for(var i = wrapper.children.length; i--;){
+    if (wrapper.children.length) {
+      for (var i = wrapper.children.length; i--;) {
         this.removeName(wrapper.children[i]);
       }
     }
-    
+
     htmlWrapper.innerHTML = '<li class="name prev">N</li>'.replace('N', name);
     var nameEl = htmlWrapper.firstChild;
     wrapper.appendChild(nameEl);
-    
+
     nameEl.getBoundingClientRect();
     nameEl.classList.remove('prev');
     nameEl.classList.add('pres');
 
-    if(wrapper.children.length > 1){
+    if (wrapper.children.length > 1) {
       this.removeName(wrapper.children[0]);
     }
   };
-  
-  this.removeName = function(el){
+
+  this.removeName = function (el) {
     el.classList.remove('pres');
     el.classList.add('past');
-    el.addEventListener('transitionend',function(e){
-      try{
+    el.addEventListener('transitionend', function (e) {
+      try {
         wrapper.removeChild(e.target);
-      }catch(e){}
+      } catch (e) {}
     });
   };
 
