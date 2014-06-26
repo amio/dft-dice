@@ -82,6 +82,16 @@ function NameRoller(wrapper, names) {
     this.currentName = idx;
     this.addName(this.names[idx]);
   };
+  
+  // Just in case.
+  this.clearWinner = function(count){
+    var winners = localStorage.getItem('winners'+count).split(',');
+    
+    for(var i = winners.length, w; i--;){
+      w = winners[i];
+      console.log(this.names.splice(this.names.indexOf(w),1));
+    }
+  };
 
   window.addEventListener('keydown', function (e) {
     switch (e.keyCode) {
