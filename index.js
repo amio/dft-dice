@@ -180,7 +180,7 @@ function FizzyText(wrapper, message) {
 
   // Set g.font to the same font as the bitmap canvas, incase we
   // want to draw some outlines.
-  s.font = g.font = "800 100px 'Helvetica', arial, sans-serif";
+  s.font = g.font = "800 80px 'Helvetica', arial, sans-serif";
 
   // Instantiate some particles
   for (var i = 0; i < praticlesNum; i++) {
